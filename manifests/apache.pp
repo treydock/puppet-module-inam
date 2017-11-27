@@ -24,7 +24,7 @@ class inam::apache {
     ssl                 => $::inam::apache_ssl,
     proxy_preserve_host => true,
     proxy_pass          => [
-      {'path' => '/', 'url' => 'http://localhost:8080'},
+      {'path' => '/', 'url' => 'http://localhost:8080/osu-inam/'},
     ],
     ssl_cert            => $::inam::apache_ssl_cert,
     ssl_key             => $::inam::apache_ssl_key,
