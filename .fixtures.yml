@@ -8,6 +8,10 @@ fixtures:
       repo: https://github.com/puppetlabs/puppetlabs-java.git
     mysql:
       repo: https://github.com/puppetlabs/puppetlabs-mysql.git
+    apache:
+      repo: https://github.com/puppetlabs/puppetlabs-apache
+    concat:
+      repo: https://github.com/puppetlabs/puppetlabs-concat.git
     yum:
       repo: https://github.com/voxpupuli/puppet-yum.git
     archive:

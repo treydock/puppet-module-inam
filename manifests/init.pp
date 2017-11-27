@@ -24,6 +24,13 @@ class inam (
   Boolean $service_enable       = true,
   Boolean $service_hasstatus    = true,
   Boolean $service_hasrestart   = true,
+  # Apache
+  Boolean $manage_apache = true,
+  Boolean $apache_ssl = false,
+  String $apache_servername = $::fqdn,
+  Optional[Stdlib::Absolutepath] $apache_ssl_cert = undef,
+  Optional[Stdlib::Absolutepath] $apache_ssl_key = undef,
+  Optional[Stdlib::Absolutepath] $apache_ssl_chain = undef,
 ) inherits inam::params {
 
   $opensmurl = "jdbc:mysql://${database_host}:3306/${database_name}"
@@ -48,6 +55,11 @@ class inam (
 
     Class['inam::install'] -> Class['inam::database']
     Class['inam::database'] -> Class['inam::config']
+  }
+
+  if $manage_apache {
+    contain inam::apache
+    Class['inam::service'] -> Class['inam::apache']
   }
 
 }
