@@ -36,6 +36,8 @@ class inam (
   $opensmurl = "jdbc:mysql://${database_host}:3306/${database_name}"
 
   contain ::phantomjs
+  $phantomjs_execdir = dirname($::phantomjs::path)
+
   contain inam::install
   contain inam::config
   contain inam::service

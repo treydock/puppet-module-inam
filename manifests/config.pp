@@ -63,7 +63,7 @@ class inam::config {
       "set osuinam.datasource.maxIdle ${::inam::datasource_maxidle}",
       "set osuinam.datasource.maxtotal ${::inam::datasource_maxtotal}",
       "set osuinam.datasource.maxwaitmillis ${::inam::datasource_maxwaitmillis}",
-      'set phantomjs.execdir /usr/local/bin',
+      "set phantomjs.execdir ${::inam::phantomjs_execdir}",
       'set phantomjs.runjs /opt/osu-inam/phantomjs/inam.js',
       'set phantomjs.filedir /opt/osu-inam/phantomjs/filedir',
       'set phantomjs.cachefile /opt/osu-inam/phantomjs/cachefile',
