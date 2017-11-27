@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/treydock/puppet-module-inam.png)](https://travis-ci.org/treydock/puppet-module-inam)
 
-####Table of Contents
+#### Table of Contents
 
 1. [Overview](#overview)
 2. [Usage - Configuration options](#usage)
