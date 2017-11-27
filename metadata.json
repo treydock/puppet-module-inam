@@ -1,0 +1,36 @@
+{
+  "name": "treydock-inam",
+  "version": "0.0.1",
+  "author": "treydock",
+  "summary": "inam Puppet module",
+  "license": "Apache-2.0",
+  "source": "git://github.com/treydock/puppet-module-inam.git",
+  "issues_url": "https://github.com/treydock/puppet-module-inam/issues",
+  "project_page": "https://github.com/treydock/puppet-module-inam",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [ "6", "7" ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [ "6", "7" ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [ "6", "7" ]
+    }
+  ],
+  "dependencies": [
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.13.1 <5.0.0" },
+    { "name": "puppetlabs/tomcat", "version_requirement": ">= 2.0.0 <3.0.0" },
+    { "name": "puppetlabs/mysql", "version_requirement": ">= 3.1.0 <6.0.0" },
+    { "name": "puppetlabs/java", "version_requirement": ">= 2.0.0 <3.0.0" },
+    { "name": "puppet/archive", "version_requirement": ">= 1.0.0 <2.0.0" },
+    { "name": "puppet/yum", "version_requirement": ">= 1.0.0 <3.0.0" },
+    { "name": "herculesteam/augeasproviders_shellvar", "version_requirement": ">= 2.0.0 <3.0.0" },
+    { "name": "camptocamp/systemd", "version_requirement": ">= 1.0.0 <2.0.0" },
+    { "name": "treydock/phantomjs", "version_requirement": ">= 0.0.1 <1.0.0" }
+  ]
+}
+

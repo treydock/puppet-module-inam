@@ -1,0 +1,13 @@
+#### File managed by Puppet ####
+[Unit]
+Description=OSU INAM Daemon
+After=multi-user.target
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/osu-inam.pid
+ExecStart=/opt/osu-inam/bin/osu-inamd -c /opt/osu-inam/osu-inamd.conf -f /opt/osu-inam/osu-inam.conf -p /var/run/osu-inam.pid
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,24 @@
+fixtures:
+  repositories:
+    stdlib:
+      repo: https://github.com/puppetlabs/puppetlabs-stdlib.git
+    tomcat:
+      repo: https://github.com/puppetlabs/puppetlabs-tomcat.git
+    java:
+      repo: https://github.com/puppetlabs/puppetlabs-java.git
+    mysql:
+      repo: https://github.com/puppetlabs/puppetlabs-mysql.git
+    yum:
+      repo: https://github.com/voxpupuli/puppet-yum.git
+    archive:
+      repo: https://github.com/voxpupuli/puppet-archive.git
+    augeasproviders_core:
+      repo: https://github.com/hercules-team/augeasproviders_core
+    augeasproviders_shellvar:
+      repo: https://github.com/hercules-team/augeasproviders_shellvar
+    systemd:
+      repo: https://github.com/camptocamp/puppet-systemd.git
+    phantomjs:
+      repo: https://github.com/treydock/puppet-module-phantomjs.git
+  symlinks:
+    inam: "#{source_dir}"
