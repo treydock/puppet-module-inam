@@ -6,7 +6,7 @@ describe 'inam class:' do
       pp =<<-EOS
       class { 'inam':
         service_ensure => 'stopped',
-        osu_inamd_configs => {
+        inamd_configs => {
           'OSU_INAM_ENABLE_HCA_NODES' => '1',
         }
       }

@@ -20,11 +20,6 @@ Puppet module to manage OSU INAM.
 
     include inam
 
-Configuration example:
-
-    inam::version: 0.9.2
-    inam::source_url: "http://mvapich.cse.ohio-state.edu/download/mvapich/inam/osu-inam-%{hiera('inam::version')}.el%{::operatingsystemmajrelease}.tar.gz"
-
 ## Reference
 
 ### Classes
@@ -39,15 +34,12 @@ Configuration example:
 * `inam::config`: Configures inam.
 * `inam::service`: Manages the inam service.
 * `inam::database`: Manages the inam database.
+* `inam::apache`: Manage Apache configuration
 * `inam::params`: Sets parameter defaults based on fact values.
 
 ### Parameters
 
 #### inam
-
-##### `version`
-
-Version of INAM to install. Default is `0.9.2`.
 
 ## Limitations
 
