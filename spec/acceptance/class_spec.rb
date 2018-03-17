@@ -6,6 +6,9 @@ describe 'inam class:' do
       pp =<<-EOS
       class { 'inam':
         service_ensure => 'stopped',
+        osu_inamd_configs => {
+          'OSU_INAM_ENABLE_HCA_NODES' => '1',
+        }
       }
       EOS
 
@@ -17,11 +20,14 @@ describe 'inam class:' do
       it { should be_installed }
     end
 
-    if fact('operatingsystemrelease') =~ /^7/
-      describe service('osu-inamd') do
-        it { should be_enabled }
-        it { should_not be_running }
-      end
+    describe service('osu-inamd') do
+      it { should be_enabled }
+      it { should_not be_running }
+    end
+
+    describe service('osu-inamweb') do
+      it { should be_enabled }
+      it { should be_running }
     end
   end
 end

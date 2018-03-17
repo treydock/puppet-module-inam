@@ -2,52 +2,19 @@
 class inam::config {
   assert_private()
 
-  file { "${::inam::params::catalina_home}/webapps/osu-inam.war":
-    ensure => 'file',
-    owner  => 'tomcat',
-    group  => 'tomcat',
-    mode   => '0644',
-    source => "/opt/osu-inam-${::inam::version}/osu-inam-${::inam::war_version}.war"
-  }
-
-  file { "${::inam::params::catalina_home}/conf/Catalina/localhost/osu-inam.xml":
-    ensure => 'file',
-    owner  => 'tomcat',
-    group  => 'tomcat',
-    mode   => '0644',
-    source => "/opt/osu-inam-${::inam::version}/osu-inam-${::inam::war_version}.xml"
-  }
-
-
   file { '/opt/osu-inam/phantomjs':
     ensure => 'directory',
-    owner  => 'tomcat',
-    group  => 'tomcat',
+    owner  => 'root',
+    group  => 'root',
     mode   => '0755',
-  }
-  file { '/opt/osu-inam/phantomjs/inam.js':
-    ensure => 'file',
-    owner  => 'tomcat',
-    group  => 'tomcat',
-    mode   => '0644',
-    source => "/opt/osu-inam-${::inam::version}/inam.js"
-  }
-  file { '/opt/osu-inam/phantomjs/vis.js':
-    ensure => 'file',
-    owner  => 'tomcat',
-    group  => 'tomcat',
-    mode   => '0644',
-    source => "/opt/osu-inam-${::inam::version}/vis.js"
   }
 
   file { '/etc/osu-inam.properties':
-    ensure  => 'file',
-    owner   => 'tomcat',
-    group   => 'tomcat',
-    mode    => '0640',
-    source  => "/opt/osu-inam-${::inam::version}/osu-inam.properties",
-    replace => false,
-    before  => Augeas['/etc/osu-inam.properties'],
+    ensure => 'file',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0640',
+    before => [Augeas['/etc/osu-inam.properties'], Augeas['/etc/osu-inam.properties-password']],
   }
 
   augeas { '/etc/osu-inam.properties':
@@ -56,31 +23,64 @@ class inam::config {
     changes => [
       "set osuinam.counterinterval ${::inam::counterinterval}",
       "set osuinam.clustering_threshold ${::inam::clustering_threshold}",
+      "set osuinam.clustername ${::inam::clustername}",
       "set osuinam.datasource.opensmurl ${::inam::opensmurl}",
       "set osuinam.datasource.username ${::inam::database_user}",
       "set osuinam.datasource.password ${::inam::database_password}",
-      "set osuinam.datasource.initialsize ${::inam::datasource_initialsize}",
-      "set osuinam.datasource.maxIdle ${::inam::datasource_maxidle}",
-      "set osuinam.datasource.maxtotal ${::inam::datasource_maxtotal}",
-      "set osuinam.datasource.maxwaitmillis ${::inam::datasource_maxwaitmillis}",
+      "set osuinam.datasource.initial-size ${::inam::datasource_initial_size}",
+      "set osuinam.datasource.max-active ${::inam::datasource_max_active}",
       "set phantomjs.execdir ${::inam::phantomjs_execdir}",
-      'set phantomjs.runjs /opt/osu-inam/phantomjs/inam.js',
+      'set phantomjs.runjs /opt/osu-inam/lib/inam.js',
       'set phantomjs.filedir /opt/osu-inam/phantomjs/filedir',
       'set phantomjs.cachefile /opt/osu-inam/phantomjs/cachefile',
     ],
-    notify  => Service[$::inam::params::tomcat_service],
+    notify  => Service['osu-inamweb'],
   }
 
-  Shellvar {
-    ensure => 'present',
-    target => '/opt/osu-inam/osu-inamd.conf',
-    notify => Service['osu-inamd'],
+  augeas { '/etc/osu-inam.properties-password':
+    lens      => 'Properties.lns',
+    incl      => '/etc/osu-inam.properties',
+    changes   => [
+      "set osuinam.datasource.password ${::inam::database_password}",
+    ],
+    show_diff => false,
+    notify    => Service['osu-inamweb'],
   }
 
-  shellvar { 'OSU_INAM_DATABASE_HOST': value => $::inam::database_host }
-  shellvar { 'OSU_INAM_DATABASE_PORT': value => 3306 }
-  shellvar { 'OSU_INAM_DATABASE_NAME': value => $::inam::database_name }
-  shellvar { 'OSU_INAM_DATABASE_USER': value => $::inam::database_user }
-  shellvar { 'OSU_INAM_DATABASE_PASSWD': value => $::inam::database_password }
+  file { '/opt/osu-inam/etc/osu-inamd.conf':
+    ensure => 'file',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0640',
+    before => [Augeas['/opt/osu-inam/etc/osu-inamd.conf'], Augeas['/opt/osu-inam/etc/osu-inamd.conf-password']],
+  }
+
+  $inamd_configs_changes = $::inam::inamd_configs.map |$key,$value| {
+    "set ${key} ${value}"
+  }
+  $inamd_conf_defaults = [
+    "set OSU_INAM_DATABASE_HOST ${::inam::database_host}",
+    'set OSU_INAM_DATABASE_PORT 3306',
+    "set OSU_INAM_DATABASE_NAME ${::inam::database_name}",
+    "set OSU_INAM_DATABASE_USER ${::inam::database_user}",
+  ]
+  $inamd_conf_changes = $inamd_conf_defaults + $inamd_configs_changes
+
+  augeas { '/opt/osu-inam/etc/osu-inamd.conf':
+    lens    => 'Shellvars.lns',
+    incl    => '/opt/osu-inam/etc/osu-inamd.conf',
+    changes => $inamd_conf_changes,
+    notify  => Service['osu-inamd'],
+  }
+
+  augeas { '/opt/osu-inam/etc/osu-inamd.conf-password':
+    lens      => 'Shellvars.lns',
+    incl      => '/opt/osu-inam/etc/osu-inamd.conf',
+    changes   => [
+      "set OSU_INAM_DATABASE_PASSWD ${::inam::database_password}",
+    ],
+    show_diff => false,
+    notify    => Service['osu-inamd'],
+  }
 
 }

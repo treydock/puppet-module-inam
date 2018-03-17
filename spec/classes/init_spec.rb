@@ -16,17 +16,6 @@ describe 'inam' do
         })
       end
 
-      case facts[:operatingsystemrelease]
-      when /^7/
-        package_name = "osu-inam-0.9.2-1.el7.centos.x86_64.rpm"
-        tomcat_package = 'tomcat'
-        tomcat_service = 'tomcat'
-      when /^6/
-        package_name = "osu-inam-0.9.2-1.el6.x86_64.rpm"
-        tomcat_package = 'tomcat6'
-        tomcat_service = 'tomcat6'
-      end
-
       it { is_expected.to compile.with_all_deps }
 
       it { is_expected.to create_class('inam') }
@@ -38,14 +27,9 @@ describe 'inam' do
 
       context "inam::install" do
         it do
-          is_expected.to contain_package(tomcat_package).with({
-            :ensure => 'installed',
-          })
-        end
-        it do
           is_expected.to contain_yum__install('osu-inam').only_with({
             :ensure => 'present',
-            :source => "/opt/osu-inam-0.9.2/#{package_name}",
+            :source => "http://mvapich.cse.ohio-state.edu/download/mvapich/inam/osu-inam-0.9.3-1.el#{facts[:operatingsystemmajrelease]}.x86_64.rpm",
           })
         end
       end
@@ -56,7 +40,15 @@ describe 'inam' do
 
       context "inam::service" do
         it do
-          is_expected.to contain_service(tomcat_service).with({
+          is_expected.to contain_service('osu-inamd').with({
+            :ensure      => 'running',
+            :enable      => 'true',
+            :hasstatus   => 'true',
+            :hasrestart  => 'true',
+          })
+        end
+        it do
+          is_expected.to contain_service('osu-inamweb').with({
             :ensure      => 'running',
             :enable      => 'true',
             :hasstatus   => 'true',
