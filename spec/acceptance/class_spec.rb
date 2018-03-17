@@ -22,7 +22,9 @@ describe 'inam class:' do
 
     describe service('osu-inamd') do
       it { should be_enabled }
-      it { should_not be_running }
+      if fact('operatingsystemrelease') =~ /^7/
+        it { should_not be_running }
+      end
     end
 
     describe service('osu-inamweb') do

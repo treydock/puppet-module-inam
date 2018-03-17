@@ -19,7 +19,7 @@ class inam (
   String $service_name                              = 'osu-inamd',
   String $service_ensure                            = 'running',
   Boolean $service_enable                           = true,
-  Boolean $service_hasstatus                        = true,
+  Boolean $service_hasstatus                        = $inam::params::service_hasstatus,
   Boolean $service_hasrestart                       = true,
   String $web_service_name                          = 'osu-inamweb',
   String $web_service_ensure                        = 'running',
