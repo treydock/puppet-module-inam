@@ -39,11 +39,18 @@ describe 'inam' do
       end
 
       context "inam::service" do
+        case facts[:operatingsystemmajrelease].to_s
+        when '6'
+          hasstatus = 'false'
+        else
+          hasstatus = 'true'
+        end
+
         it do
           is_expected.to contain_service('osu-inamd').with({
             :ensure      => 'running',
             :enable      => 'true',
-            :hasstatus   => 'true',
+            :hasstatus   => hasstatus,
             :hasrestart  => 'true',
           })
         end
