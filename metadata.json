@@ -25,7 +25,7 @@
     { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.13.1 <5.0.0" },
     { "name": "puppetlabs/mysql", "version_requirement": ">= 3.1.0 <6.0.0" },
     { "name": "puppetlabs/java", "version_requirement": ">= 1.0.0 <3.0.0" },
-    { "name": "puppetlabs/apache", "version_requirement": ">= 1.8.0 <3.0.0" },
+    { "name": "puppetlabs/apache", "version_requirement": ">= 1.8.0 <4.0.0" },
     { "name": "puppet/yum", "version_requirement": ">= 1.0.0 <3.0.0" },
     { "name": "treydock/phantomjs", "version_requirement": ">= 0.0.1 <1.0.0" }
   ]
