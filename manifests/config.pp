@@ -9,6 +9,13 @@ class inam::config {
     mode   => '0755',
   }
 
+  file { '/opt/osu-inam/phantomjs/filedir':
+    ensure => 'directory',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+
   file { '/etc/osu-inam.properties':
     ensure => 'file',
     owner  => 'root',
