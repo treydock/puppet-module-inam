@@ -15,6 +15,8 @@ class inam (
   Integer $datasource_initial_size                  = 20,
   Integer $datasource_max_active                    = 50,
   Hash $inamd_configs                               = {},
+  Stdlib::Filemode $config_mode                     = '0640',
+  Optional[Stdlib::Absolutepath] $phantomjs_execdir = undef,
   # Service
   String $service_name                              = 'osu-inamd',
   String $service_ensure                            = 'running',
@@ -38,7 +40,7 @@ class inam (
   $opensmurl = "jdbc:mysql://${database_host}:3306/${database_name}"
 
   contain ::phantomjs
-  $phantomjs_execdir = dirname($::phantomjs::path)
+  $_phantomjs_execdir = pick($phantomjs_execdir, dirname($::phantomjs::path))
 
   contain inam::install
   contain inam::config

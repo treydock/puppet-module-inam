@@ -20,7 +20,7 @@ class inam::config {
     ensure => 'file',
     owner  => 'root',
     group  => 'root',
-    mode   => '0640',
+    mode   => $::inam::config_mode,
     before => [Augeas['/etc/osu-inam.properties'], Augeas['/etc/osu-inam.properties-password']],
   }
 
@@ -36,7 +36,7 @@ class inam::config {
       "set osuinam.datasource.password ${::inam::database_password}",
       "set osuinam.datasource.initial-size ${::inam::datasource_initial_size}",
       "set osuinam.datasource.max-active ${::inam::datasource_max_active}",
-      "set phantomjs.execdir ${::inam::phantomjs_execdir}",
+      "set phantomjs.execdir ${::inam::_phantomjs_execdir}",
       'set phantomjs.runjs /opt/osu-inam/lib/inam.js',
       'set phantomjs.filedir /opt/osu-inam/phantomjs/filedir',
       'set phantomjs.cachefile /opt/osu-inam/phantomjs/cachefile',
@@ -58,7 +58,7 @@ class inam::config {
     ensure => 'file',
     owner  => 'root',
     group  => 'root',
-    mode   => '0640',
+    mode   => $::inam::config_mode,
     before => [Augeas['/opt/osu-inam/etc/osu-inamd.conf'], Augeas['/opt/osu-inam/etc/osu-inamd.conf-password']],
   }
 
